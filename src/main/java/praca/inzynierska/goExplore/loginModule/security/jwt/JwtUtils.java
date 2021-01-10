@@ -1,6 +1,8 @@
 package praca.inzynierska.goExplore.loginModule.security.jwt;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,16 @@ public class JwtUtils {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
+        List<String> roles = new LinkedList<>();
+
+        userPrincipal.getAuthorities().forEach((data)->{
+            roles.add(data.toString());
+        });
         return Jwts.builder()
+                .claim("username",userPrincipal.getUsername())
+                .claim("id",userPrincipal.getId())
+                .claim("email",userPrincipal.getEmail())
+                .claim("roles",roles)
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
