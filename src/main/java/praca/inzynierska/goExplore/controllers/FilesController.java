@@ -25,10 +25,10 @@ public class FilesController {
     FilesStorageService storageService;
 
     @PostMapping("/files/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("subPath") String subPath) {
         String message = "";
         try {
-            storageService.save(file);
+            storageService.save(file, subPath);
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -38,12 +38,14 @@ public class FilesController {
         }
     }
 
-    @GetMapping("/files")
-    public ResponseEntity<List<FileInfo>> getListFiles() {
-        List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
+    @GetMapping("/files/{subPath}")
+    @ResponseBody
+    public ResponseEntity<List<FileInfo>> getListFiles(@PathVariable(value="subPath", required=true) String subPath) {
+
+        List<FileInfo> fileInfos = storageService.loadAll(subPath).map(path -> {
             String filename = path.getFileName().toString();
             String url = MvcUriComponentsBuilder
-                    .fromMethodName(FilesController.class, "getFile", path.getFileName().toString()).build().toString();
+                    .fromMethodName(FilesController.class, "getFile",  subPath, path.getFileName().toString()).build().toString();
 
             return new FileInfo(filename, url);
         }).collect(Collectors.toList());
@@ -51,10 +53,11 @@ public class FilesController {
         return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/file/{subPath}/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-        Resource file = storageService.load(filename);
+    public ResponseEntity<Resource> getFile(@PathVariable("subPath") String subPath,@PathVariable("filename") String filename) {
+        System.out.println(subPath);
+        Resource file = storageService.load(filename, subPath);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }

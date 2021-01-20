@@ -26,32 +26,46 @@ public class FilesStorageService implements IFilesStorageService {
                 Files.createDirectory(root);
             };
         } catch (IOException e) {
-            throw new RuntimeException("Could not initialize folder for upload!");
+            throw new RuntimeException("Could not initialize main folder for upload!");
         }
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public void save(MultipartFile file, String subPath) {
+        final Path subRoot = Paths.get("uploads/"+subPath);
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+            if(!Files.exists(subRoot)){
+                Files.createDirectory(subRoot);
+            };
+        } catch (IOException e) {
+            throw new RuntimeException("Could not initialize folder for upload!");
+        }
+        try {
+            Files.copy(file.getInputStream(), subRoot.resolve(file.getOriginalFilename()));
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
 
     @Override
-    public Resource load(String filename) {
-        try {
-            Path file = root.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
+    public Resource load(String filename, String subPath) {
+        final Path subRoot = Paths.get("uploads/" + subPath);
+        if (Files.exists(subRoot)) {
+            try {
+                Path file = subRoot.resolve(filename);
+                Resource resource = new UrlResource(file.toUri());
 
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new RuntimeException("Could not read the file!");
+                if (resource.exists() || resource.isReadable()) {
+                    return resource;
+                } else {
+                    throw new RuntimeException("Could not read the file!");
+                }
+            } catch (MalformedURLException e) {
+                throw new RuntimeException("Error: " + e.getMessage());
+
             }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+        }else {
+            throw new RuntimeException("Could not read the file path!");
         }
     }
 
@@ -61,10 +75,15 @@ public class FilesStorageService implements IFilesStorageService {
     //}
 
     @Override
-    public Stream<Path> loadAll() {
-        try {
-            return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
-        } catch (IOException e) {
+    public Stream<Path> loadAll(String subPath) {
+        final Path subRoot = Paths.get("uploads/"+subPath);
+        if(Files.exists(subRoot)){
+            try {
+                return Files.walk(subRoot, 2).filter(path -> !path.equals(subRoot)).map(subRoot::relativize);
+            } catch (IOException e) {
+                throw new RuntimeException("Could not load the files!");
+            }
+        }else{
             throw new RuntimeException("Could not load the files!");
         }
     }
