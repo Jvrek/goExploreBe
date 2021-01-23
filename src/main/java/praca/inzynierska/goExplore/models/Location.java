@@ -25,4 +25,7 @@ public class Location {
     private String description;
 
     private List<Image> Images;
+
+    @NotBlank
+    private LatLng latLng;
 }
