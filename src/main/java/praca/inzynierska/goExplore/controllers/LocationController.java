@@ -11,6 +11,7 @@ import praca.inzynierska.goExplore.services.LocationService;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/location")
@@ -30,8 +31,13 @@ public class LocationController {
         return ResponseEntity.ok("resource updated");
     }
 
+    @GetMapping("/get/{id}")
+    public Optional<Location> getLocation(@PathVariable(value="id", required=true) String id){
+        return this.locationService.getLocation(id);
+    }
+
     @GetMapping("/get")
-    public List<Location> getLocation() {
+    public List<Location> getAllLocation() {
         return this.locationService.getAllLocations();
     }
 
