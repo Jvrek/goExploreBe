@@ -1,4 +1,4 @@
-package praca.inzynierska.goExplore.models;
+package praca.inzynierska.goExplore.locationModule.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

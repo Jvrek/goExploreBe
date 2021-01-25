@@ -1,16 +1,13 @@
-package praca.inzynierska.goExplore.controllers;
+package praca.inzynierska.goExplore.locationModule.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 import praca.inzynierska.goExplore.models.DTOs.CardLocationDTO;
-import praca.inzynierska.goExplore.models.Location;
-import praca.inzynierska.goExplore.services.LocationService;
+import praca.inzynierska.goExplore.locationModule.models.Location;
+import praca.inzynierska.goExplore.locationModule.services.LocationService;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,7 +25,7 @@ public class LocationController {
     @PatchMapping("/update/{id}")
     public ResponseEntity<?> updateLocation(@PathVariable(value="id", required=true) String id, @RequestBody Location location){
         this.locationService.updateLocation(location, id);
-        return ResponseEntity.ok("resource updated");
+        return ResponseEntity.ok("Zaktualizowano pomyślnie");
     }
 
     @GetMapping("/get/{id}")

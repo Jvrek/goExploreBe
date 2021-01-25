@@ -2,7 +2,7 @@ package praca.inzynierska.goExplore.loginModule.repository;
 
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import praca.inzynierska.goExplore.loginModule.models.User;
+import praca.inzynierska.goExplore.userModule.models.User;
 
 import java.util.Optional;
 

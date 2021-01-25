@@ -3,8 +3,8 @@ package praca.inzynierska.goExplore.models.DTOs;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import praca.inzynierska.goExplore.models.LatLng;
-import praca.inzynierska.goExplore.models.Location;
+import praca.inzynierska.goExplore.locationModule.models.LatLng;
+import praca.inzynierska.goExplore.locationModule.models.Location;
 
 @Data
 @NoArgsConstructor

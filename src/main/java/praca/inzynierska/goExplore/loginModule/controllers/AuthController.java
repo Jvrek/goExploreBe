@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import praca.inzynierska.goExplore.loginModule.models.ERole;
 import praca.inzynierska.goExplore.loginModule.models.Role;
-import praca.inzynierska.goExplore.loginModule.models.User;
+import praca.inzynierska.goExplore.userModule.models.User;
 import praca.inzynierska.goExplore.loginModule.payload.request.LoginRequest;
 import praca.inzynierska.goExplore.loginModule.payload.request.SignupRequest;
 import praca.inzynierska.goExplore.loginModule.payload.response.JwtResponse;

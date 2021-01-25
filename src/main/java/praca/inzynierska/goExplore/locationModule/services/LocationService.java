@@ -1,13 +1,10 @@
-package praca.inzynierska.goExplore.services;
+package praca.inzynierska.goExplore.locationModule.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import praca.inzynierska.goExplore.models.DTOs.CardLocationDTO;
-import praca.inzynierska.goExplore.models.Location;
-import praca.inzynierska.goExplore.repositories.LocationRepository;
+import praca.inzynierska.goExplore.locationModule.models.Location;
+import praca.inzynierska.goExplore.locationModule.repositories.LocationRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;

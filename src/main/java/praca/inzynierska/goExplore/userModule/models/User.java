@@ -1,4 +1,4 @@
-package praca.inzynierska.goExplore.loginModule.models;
+package praca.inzynierska.goExplore.userModule.models;
 
 
 import java.util.HashSet;
@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import praca.inzynierska.goExplore.loginModule.models.Role;
 
 @Data
 @NoArgsConstructor

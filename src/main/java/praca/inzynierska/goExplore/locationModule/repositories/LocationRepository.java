@@ -1,9 +1,7 @@
-package praca.inzynierska.goExplore.repositories;
+package praca.inzynierska.goExplore.locationModule.repositories;
 
-import org.springframework.data.mongodb.core.query.UpdateDefinition;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
-import praca.inzynierska.goExplore.models.Location;
+import praca.inzynierska.goExplore.locationModule.models.Location;
 
 import java.util.Optional;
 

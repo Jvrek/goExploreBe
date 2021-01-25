@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import praca.inzynierska.goExplore.loginModule.models.User;
+import praca.inzynierska.goExplore.userModule.models.User;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
