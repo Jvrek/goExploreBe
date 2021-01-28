@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import praca.inzynierska.goExplore.models.Image;
+import praca.inzynierska.goExplore.models.enums.EActivityType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -29,4 +30,14 @@ public class Location {
 
     @NotBlank
     private LatLng latLng;
+
+    @NotBlank
+    private List<EActivityType> activityType;
+
+    @NotBlank
+    private Integer avgCost;
+
+    @NotBlank
+    @Size(max = 5, min = 1)
+    private Integer maxPeoples;
 }

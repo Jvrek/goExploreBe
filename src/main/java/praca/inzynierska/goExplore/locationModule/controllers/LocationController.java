@@ -3,6 +3,7 @@ package praca.inzynierska.goExplore.locationModule.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import praca.inzynierska.goExplore.locationModule.models.SearchCriteria;
 import praca.inzynierska.goExplore.models.DTOs.CardLocationDTO;
 import praca.inzynierska.goExplore.locationModule.models.Location;
 import praca.inzynierska.goExplore.locationModule.services.LocationService;
@@ -34,8 +35,13 @@ public class LocationController {
     }
 
     @GetMapping("/get")
-    public List<Location> getAllLocation() {
+    public List<Location> getAllLocations() {
         return this.locationService.getAllLocations();
+    }
+
+    @PostMapping("/getFiltered")
+    public List<Location> getFilteredLocations(@RequestBody SearchCriteria searchCriteria) {
+        return this.locationService.getFilteredLocations(searchCriteria);
     }
 
     @GetMapping("/get-cards")

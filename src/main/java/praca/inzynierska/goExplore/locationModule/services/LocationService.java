@@ -2,6 +2,7 @@ package praca.inzynierska.goExplore.locationModule.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import praca.inzynierska.goExplore.locationModule.models.SearchCriteria;
 import praca.inzynierska.goExplore.models.DTOs.CardLocationDTO;
 import praca.inzynierska.goExplore.locationModule.models.Location;
 import praca.inzynierska.goExplore.locationModule.repositories.LocationRepository;
@@ -34,6 +35,15 @@ public class LocationService {
             if(newLocation.getLatLng() != null){
                 loc.setLatLng(newLocation.getLatLng());
             }
+            if(newLocation.getActivityType() != null){
+                loc.setActivityType(newLocation.getActivityType());
+            }
+            if(newLocation.getAvgCost() != null){
+                loc.setAvgCost(newLocation.getAvgCost());
+            }
+            if(newLocation.getMaxPeoples() != null){
+                loc.setMaxPeoples(newLocation.getMaxPeoples());
+            }
             this.locationRepository.save(loc);
         });
     }
@@ -41,6 +51,39 @@ public class LocationService {
     public List<Location> getAllLocations(){
         return this.locationRepository.findAll();
     }
+
+
+
+    public List<Location> getFilteredLocations(SearchCriteria searchCriteria){
+        List<Location> locations = this.locationRepository.findAll();
+        List<Location> filteredLocations;
+        filteredLocations = locations.stream()
+                .filter(location -> {
+                    if(searchCriteria.getAvgCost() == null){
+                        return true;
+                    }
+                    return location.getAvgCost() <= searchCriteria.getAvgCost();
+                } )
+                .filter(location -> {
+                    if(searchCriteria.getMaxPeoples() == null){
+                        return true;
+                    }
+                    return location.getMaxPeoples() >= searchCriteria.getMaxPeoples();
+                })
+                .collect(Collectors.toList());
+
+        if(searchCriteria.getActivityType() != null){
+            locations.forEach(location -> {
+                if(!location.getActivityType().contains(searchCriteria.getActivityType())){
+                    filteredLocations.remove(location);
+                };
+            });
+        }
+
+         return filteredLocations;
+
+    }
+
 
     public Optional<Location> getLocation(String id){
         return this.locationRepository.findById(id);
