@@ -40,4 +40,6 @@ public class Location {
     @NotBlank
     @Size(max = 5, min = 1)
     private Integer maxPeoples;
+
+    private String ownerId;
 }

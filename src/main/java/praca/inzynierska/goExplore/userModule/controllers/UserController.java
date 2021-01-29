@@ -9,6 +9,7 @@ import praca.inzynierska.goExplore.userModule.services.UserService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,18 +19,31 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/get")
-    public List<User> getAllLocation() {
+    public List<User> getAllUsers() {
         return this.userService.getAllUsers();
+    }
+    @GetMapping("/getUnactivatedUsers")
+    public List<User> getAllUnactivatedUsers() {
+        return this.userService.getAllUsers().stream()
+                .filter(user -> user.isActive() == false)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/get/{id}")
-    public Optional<User> getLocation(@PathVariable(value="id", required=true) String id){
+    public Optional<User> getUser(@PathVariable(value="id", required=true) String id){
         return this.userService.getUser(id);
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<?> updateLocation(@PathVariable(value="id", required=true) String id, @RequestBody User user){
+    public ResponseEntity<?> updateUser(@PathVariable(value="id", required=true) String id, @RequestBody User user){
         this.userService.updateUser(user, id);
         return ResponseEntity.ok("Zaktualizowano pomyślnie");
+    }
+
+    @PostMapping("/activate")
+    public void activateUser(@RequestBody String id){
+        User user = this.userService.getUser(id).get();
+        user.activate();
+        this.userService.updateUserWithoutId(user);
     }
 }

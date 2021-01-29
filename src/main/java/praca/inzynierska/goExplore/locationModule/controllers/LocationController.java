@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import praca.inzynierska.goExplore.locationModule.models.SearchCriteria;
+import praca.inzynierska.goExplore.loginModule.security.jwt.JwtUtils;
 import praca.inzynierska.goExplore.models.DTOs.CardLocationDTO;
 import praca.inzynierska.goExplore.locationModule.models.Location;
 import praca.inzynierska.goExplore.locationModule.services.LocationService;
@@ -29,6 +30,12 @@ public class LocationController {
         return ResponseEntity.ok("Zaktualizowano pomyślnie");
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteLocation(@RequestBody String id){
+        this.locationService.deleteLocation(id);
+        return ResponseEntity.ok("Lokacja została usunięta");
+    }
+
     @GetMapping("/get/{id}")
     public Optional<Location> getLocation(@PathVariable(value="id", required=true) String id){
         return this.locationService.getLocation(id);
@@ -37,6 +44,11 @@ public class LocationController {
     @GetMapping("/get")
     public List<Location> getAllLocations() {
         return this.locationService.getAllLocations();
+    }
+
+    @GetMapping("/get-owned/{id}")
+    public List<Location> getAllOwnedLocations(@PathVariable(value="id", required=true) String id) {
+        return this.locationService.getAllOwnedLocations(id);
     }
 
     @PostMapping("/getFiltered")

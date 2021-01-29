@@ -19,6 +19,9 @@ public class LocationService {
     public String saveLocation(Location location){
        return this.locationRepository.save(location).getId();
     }
+    public void deleteLocation(String id){
+        this.locationRepository.deleteById(id);
+    }
 
     public void updateLocation(Location newLocation, String id){
         Optional<Location> location = this.locationRepository.findById(id);
@@ -50,6 +53,10 @@ public class LocationService {
 
     public List<Location> getAllLocations(){
         return this.locationRepository.findAll();
+    }
+
+    public List<Location> getAllOwnedLocations(String id){
+        return this.locationRepository.findByOwnerId(id);
     }
 
 

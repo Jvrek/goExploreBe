@@ -24,6 +24,8 @@ public class User {
     @Id
     private String id;
 
+    private boolean isActive;
+
     @NotBlank
     @Size(max = 20)
     private String username;
@@ -40,10 +42,20 @@ public class User {
     @DBRef
     private Set<Role> roles = new HashSet<>();
 
+
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public void activate(){
+        this.isActive = true;
+    }
+
+    public void deactivate(){
+        this.isActive = false;
     }
 
 }

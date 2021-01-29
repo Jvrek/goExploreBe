@@ -64,6 +64,11 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
+        if(!userDetails.isActive()){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Konto nie jest aktywne"));
+        }
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
@@ -72,7 +77,7 @@ public class AuthController {
                 roles));
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -107,8 +112,8 @@ public class AuthController {
                         roles.add(adminRole);
 
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                    case "bus":
+                        Role modRole = roleRepository.findByName(ERole.ROLE_BUSINES)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
 
@@ -122,6 +127,14 @@ public class AuthController {
         }
 
         user.setRoles(roles);
+        user.activate();
+        user.getRoles().stream().forEach(role ->{
+                if(role.getName().equals(ERole.ROLE_BUSINES)){
+                    user.deactivate();
+                }
+        });
+
+
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

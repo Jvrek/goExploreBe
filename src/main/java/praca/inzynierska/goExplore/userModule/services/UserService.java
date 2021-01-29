@@ -32,4 +32,8 @@ public class UserService {
             this.userRepository.save(usr);
         });
     }
+
+    public void updateUserWithoutId(User user){
+        this.userRepository.save(user);
+    }
 }
